@@ -16,7 +16,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                bat 'dotnet test --no-build --verbosity normal'
+                bat 'dotnet test --no-build --verbosity detailed --logger trx --results-directory TestResults/'
             }
         }
     }
