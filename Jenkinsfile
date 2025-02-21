@@ -13,14 +13,17 @@ pipeline {
         }
 
         stage('Setup .NET') {
-            steps {
-                bat """
-                echo Installing .NET ${DOTNET_VERSION}
-                choco install dotnet-sdk --version=${DOTNET_VERSION} -y
-                """
-            }
-        }
-
+    steps {
+        bat """
+        echo Checking if .NET is installed...
+        dotnet --version || (
+            echo .NET not found, installing...
+            curl -L https://dot.net/v1/dotnet-install.ps1 -o dotnet-install.ps1
+            powershell -ExecutionPolicy Bypass -File dotnet-install.ps1 -Version 6.0
+        )
+        """
+    }
+}
         stage('Restore Dependencies') {
             steps {
                 bat 'dotnet restore'
